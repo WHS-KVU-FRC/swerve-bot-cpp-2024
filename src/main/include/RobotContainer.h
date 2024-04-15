@@ -4,7 +4,10 @@
 
 #pragma once
 
+#include <frc2/command/button/CommandXboxController.h>
 #include <frc2/command/CommandPtr.h>
+
+#include "subsystems/Drivebase.h"
 
 class RobotContainer {
  public:
@@ -13,5 +16,7 @@ class RobotContainer {
   frc2::CommandPtr GetAutonomousCommand();
 
  private:
+  frc2::CommandXboxController m_controller{0};
+  Drivebase m_drive;
   void ConfigureBindings();
 };

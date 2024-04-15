@@ -54,8 +54,7 @@ class SwerveModule {
     kITurn,
     kDTurn,
     frc::TrapezoidProfile<units::radians>::Constraints{
-      kMaxAngularVelocity, kMaxAngularAcceleration}
-  };
+      kMaxAngularVelocity, kMaxAngularAcceleration}};
 
   frc::SimpleMotorFeedforward<units::meters> m_driveFF = 
     frc::SimpleMotorFeedforward<units::meters>{kSDrive, kVDrive};

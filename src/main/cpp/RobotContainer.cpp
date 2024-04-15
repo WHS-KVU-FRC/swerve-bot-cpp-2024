@@ -16,8 +16,8 @@ void RobotContainer::ConfigureBindings() {
       -m_controller.GetLeftY(),  // As +x is up, and up on controller is -y
       -m_controller.GetLeftX(),  // As +y is left, and left on controller is -x
       -m_controller.GetRightX(), // As CCW is positive, and left on controller is -x
-      true,
-      20_ms);},
+      true,     // isFieldOriented
+      20_ms);}, // default time between roboRIO periodic cycles
     {&m_drive})
   );
 }

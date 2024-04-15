@@ -52,6 +52,10 @@ void SwerveModule::SetDesiredState(frc::SwerveModuleState const &desiredState) {
   frc::Rotation2d const turnEncoderRotation = 
     frc::Rotation2d{units::radian_t{m_turnEncoder.GetDistance()}};
   
+  // Optimizing the turning angle so that the maximum angle that a module
+  // turns is 90 degrees.  As an example, if I am going forward, and then
+  // want to go backwards, optimize will make sure the turn angle is 0 deg
+  // and that the speed simply gets reversed.
   frc::SwerveModuleState optimizedState = 
     frc::SwerveModuleState::Optimize(desiredState, turnEncoderRotation);
   

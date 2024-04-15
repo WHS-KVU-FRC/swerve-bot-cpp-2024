@@ -18,6 +18,10 @@
 #include <frc/motorcontrol/PWMSparkMax.h>
 #include <frc/trajectory/TrapezoidProfile.h>
 
+#include "Constants.h"
+
+using namespace SwerveModuleConstants;
+
 class SwerveModule {
  public:
   SwerveModule(int const drivePort, int const turnPort,

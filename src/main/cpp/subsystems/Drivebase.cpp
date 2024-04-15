@@ -15,26 +15,25 @@ void Drivebase::Drive(double xSpeed,
                       bool fieldRelative,
                       units::second_t period) {
   units::meters_per_second_t xSpeedLimited = 
-    m_xspeedLimiter.Calculate(
-      frc::ApplyDeadband(xSpeed, 0.02) * kMaxSpeed);
+    m_xspeedLimiter.Calculate(frc::ApplyDeadband(xSpeed, 0.02)) * kMaxSpeed;
   
   units::meters_per_second_t ySpeedLimited =
-    m_yspeedLimiter.Calculate(
-      frc::ApplyDeadband(ySpeed, 0.02) * kMaxSpeed);
+    m_yspeedLimiter.Calculate(frc::ApplyDeadband(ySpeed, 0.02)) * kMaxSpeed;
   
   units::radians_per_second_t rotLimited =
-    m_rotLimiter.Calculate(
-      frc::ApplyDeadband(rot, 0.02) * kMaxAngularSpeed);
+    m_rotLimiter.Calculate(frc::ApplyDeadband(rot, 0.02)) * kMaxAngularSpeed;
 
   wpi::array<frc::SwerveModuleState, 4> *states;
   if (fieldRelative) {
-    states = &m_kinematics.ToSwerveModuleStates(frc::ChassisSpeeds::Discretize(
+    wpi::array<frc::SwerveModuleState, 4> temp = m_kinematics.ToSwerveModuleStates(frc::ChassisSpeeds::Discretize(
       frc::ChassisSpeeds::FromFieldRelativeSpeeds(xSpeedLimited, ySpeedLimited, rotLimited, m_gyro.GetRotation2d()),
       period));
+    states = &temp;
   } else {
-    states = &m_kinematics.ToSwerveModuleStates(frc::ChassisSpeeds::Discretize(
+    wpi::array<frc::SwerveModuleState, 4> temp = m_kinematics.ToSwerveModuleStates(frc::ChassisSpeeds::Discretize(
       frc::ChassisSpeeds{xSpeedLimited, ySpeedLimited, rotLimited},
       period));
+    states = &temp;
   }
   m_kinematics.DesaturateWheelSpeeds(states, kMaxSpeed);
   m_modules[0].SetDesiredState(states->at(0));

@@ -39,15 +39,13 @@ SwerveModule::SwerveModule(int const drivePort, int const turnPort,
 frc::SwerveModuleState SwerveModule::GetState() const {
   return frc::SwerveModuleState{
     units::meters_per_second_t{m_driveEncoder.GetRate()},
-    units::radian_t{m_turnEncoder.GetDistance()}
-  };
+    units::radian_t{m_turnEncoder.GetDistance()}};
 }
 
 frc::SwerveModulePosition SwerveModule::GetPosition() const {
   return frc::SwerveModulePosition{
     units::meter_t{m_driveEncoder.GetDistance()},
-    units::radian_t{m_turnEncoder.GetDistance()}
-  };
+    units::radian_t{m_turnEncoder.GetDistance()}};
 }
 
 void SwerveModule::SetDesiredState(frc::SwerveModuleState const &desiredState) {
@@ -67,21 +65,18 @@ void SwerveModule::SetDesiredState(frc::SwerveModuleState const &desiredState) {
 
   // Calculate the drive output from the drive PID controller.
   units::volt_t const driveOutput = units::volt_t{m_drivePIDController.Calculate(
-    m_driveEncoder.GetRate(), optimizedState.speed.value())
-  };
+    m_driveEncoder.GetRate(), optimizedState.speed.value())};
   units::volt_t const driveFeedforward = m_driveFF.Calculate(optimizedState.speed);
 
   // Calculate the turn output from the turn PID controller
   units::volt_t const turnOutput = units::volt_t{m_turnPIDController.Calculate(
-    units::radian_t{m_turnEncoder.GetRate()}, optimizedState.angle.Radians())
-  };
+    units::radian_t{m_turnEncoder.GetRate()}, optimizedState.angle.Radians())};
 
   // Note that the setpoint velocity is needed for turning PID control
   // since we don't want to instantly go to the optimizedState's turn velocity.
   // We actually want to use the setpoint given by the trapezoidal profile.
   units::volt_t const turnFeedforward = m_turnFF.Calculate(
-    m_turnPIDController.GetSetpoint().velocity
-  );
+    m_turnPIDController.GetSetpoint().velocity);
 
   // Set the motor outputs via FF + PID
   m_driveMotor.SetVoltage(driveFeedforward + driveOutput);
